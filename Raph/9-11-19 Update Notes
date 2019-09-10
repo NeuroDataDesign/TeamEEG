@@ -18,7 +18,7 @@
 
 
 
-Automagic: Standardized preprocessing of big EEG data (Pedroni 2019 Automagic):
+#Automagic: Standardized preprocessing of big EEG data (Pedroni 2019 Automagic):
 
   A way to improve the quality of eeg recording and set a standard of quality to allow for large scale adoption of using EEG data
  The main purpose of this is to remove subjective opions on data EEG sets and to create a formal way to find and identify noisy channels and data sets in order to improve overall quiality if analysis of the data
