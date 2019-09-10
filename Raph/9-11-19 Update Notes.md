@@ -1,4 +1,4 @@
-#Microstates in Resting-State EEG: Current Status and Future Directions (Khanna 2015):
+Microstates in Resting-State EEG: Current Status and Future Directions (Khanna 2015):
 
   EEG - millisecond temporal resolution
   Resting state, alpha frequency band (8-12Hz) can be categorized into a limited number of distinct “stable” states called microstates.
