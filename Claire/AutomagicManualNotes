@@ -1,0 +1,82 @@
+Notes on Automagic User Manual
+General
+Workflow: 1)create project w/ configs and data, 2)Run preprocessing, 3) review and inspect bad channels and their effects, interpolate, 4) quality assessment
+EEGlab is used — we’ll need to find replacement functions probs within MNE
+
+How to Start
+Function runAutomagic starts a GUI
+Very specific data folder structure required, check documentation to see
+Creating a new project needs:
+	name of project
+	file extension (five different functions used depending on the file type, so we’ll need to check this out and make sure we can do all of them)
+	data folder
+	results folder
+	channel location file (must be supported by pop_chanedit function, there’s something weird with Electrical geodesics format)
+	sampling rate
+	reference channel if any
+	any channels to exclude
+
+Configurations
+Bad channel detection
+	PREP (Bigdely-Shamlo et al. 2015)
+	clean_rawdata()
+Filtering
+	linepower
+	high pass and low pass filters (both use eeg_filtnew()
+Artifact removal
+	can do EOG regression
+	MARA: ICA and rejection, requires 10-20 ch label system
+	robust PCA (Lin, Chen, and Ma 2010)
+Quality Rating
+	Overall thresholds
+	Time thresholds
+	Channel thresholds
+	all of these are used for calculations about good/bad datasets
+Interpolation
+	eeg_interp()
+All of this is selected in the GUI and then saved for all of the project, can’t really be changed
+Load up these configs from another previous file by loading project_state.mat file
+
+Quality Assessment
+New GUI for this after preprocessing
+Plot of all the data, marks the automatically detected bad channels, has all the stats on the side for how good the dataset is
+Quality Rating GUI
+	overall high amplitude ratio
+	timepoints of high variance ratio
+	channels of high variance ratio
+	ratio of bad channels
+	all of these then used, thresholds for each of them, to bin into Good, OK, and Bad datasets
+Files get labeled with a quality rating at the end when committed, any change in quality rating adds another prefix so you can always see first commit
+
+State Files
+Project state file (project_state.mat) has all the info on the files in the project, configurations, everything; useful for debugging or loading configs
+Main state file (state.mat) has info about your version of automatic
+
+BIDS integration
+Let’s worry about this later
+
+Adding and Removing Data
+Add or delete from finder and then refresh the main Automatic GUI
+Can also merge projects by just copying data into new folders, but leaving out their project_state.mat files
+
+Automagic as an EEGLab extension
+We won’t worry about this
+
+Using Automagic within the command line
+Can start a new project with Project function
+DefaultParameters.m used anywhere there is no inputted parameter
+Public methods in Project.m , so you can do a lot once its made
+	project.preprocesAll()
+	project.interpolateSelected()
+Specific template for parameters
+Main preprocessing function preprocess.m
+Default parameters used for my_param = struct() but a preprocessing step is skipped if you write struct([]), only way to skip
+Default steps are PREP, MARA ICA and EOG regression
+
+Standalone preprocessing code
+preprocess.m main code, calls others
+Needs an EEGlab input format?
+
+Docker
+I think I need to understand Docker before I can really understand this one
+
