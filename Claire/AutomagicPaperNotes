@@ -1,0 +1,56 @@
+Notes on Automagic 2019 paper
+Intro
+EEG is cheap and can be useful for stuff but is really susceptible to outside influences on the data recorded
+Methodological replication is garbage in the field
+Quality is really subjective
+Quality metrics people have used are weird and not universally useful
+EEG studies often last a long time, so you really need to lock in your processing and make sure its doing the exact same thing to every data set
+
+Automagic pipeline
+A lot of this is going to be built off EEGLAB - omg when your first lab experience comes back around :’)
+Project
+Blah blah all the same info as wiki
+
+Bad Channels
+Bad channels are low SNR or low signal over the whole course of EEG
+Don’t need to remove all the epochs, just interpolate EEG
+PREP pipeline for bad channel ID
+	copy EEG, high pass 1Hz, line noise remove with a deterministic sine wave for 60/50 Hz and the multiples
+	iterative estimation of a robust reference
+	overall quite computationally expensive
+clean_rawdata() for bad channel ID - eeglab plugin
+	faster and less computation
+	non-varying channels detected, then .5-1Hz non causal filter
+	looks for channels with low correlation to estimate based on a reconstruction
+	median absolute deviation of diff btwn raw EEG and line noise gives SNR
+	z transform and threshold to decide bad channels
+	also some time period detection for bad epochs, but it isn’t super robust
+Also detect bad channels by just really high variance
+Remove bad before ICA
+Filtering with pop_eegfiltnew
+
+Artifact Correction
+EOG regression - uses EEG to estimate EOG and then subtracts
+Multiple Artifact Rejection Algorithm (MARA)
+	eeglab plugin
+	runica function
+	supervised learning algorithm used to put ICAs into artifacts and not
+Robust PCA (rPCA)
+	faster but less good and can remove some important signal
+DC offset remove 
+Output file is a mat file that contains EEG structure for eeglab
+
+Data Viewer let’s ya see everything
+EEG interpolation is now done (if desired, if not they just become NaN)
+
+Quality Assessment
+Same 4 methods as discussed in the wiki
+Purpose of using a few different ones is to allow for flexibility based on application/needs
+Thresholds on the metrics for Good/OK/bad
+To restrict any p-hacking attempts, everything is labeled after commits
+
+Overview of Existing EEG Prerocessing Pipelines
+This is less important to us, we aren’t debating the algorithms/pipeline
+
+Validation
+Again, I’m not here to judge rn, we can dig deeper into this when we get to the data analysis part of things
