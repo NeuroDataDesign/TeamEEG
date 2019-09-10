@@ -1,4 +1,5 @@
-Notes on Automagic 2019 paper
+Notes on A. Pedroni et. al, “Automagic: Standard preprocessing of big EEG data”, NeuroImage 2019
+
 Intro
 EEG is cheap and can be useful for stuff but is really susceptible to outside influences on the data recorded
 Methodological replication is garbage in the field
