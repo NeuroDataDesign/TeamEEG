@@ -1,0 +1,28 @@
+AUTOMAGIC: Standardized Preprocessing of Big EEG Data
+
+-objectively quantify the quality of preprocessed EEG
+-reduce artifact via pipeline of algorithms to detect artifcatual channels + MARA (Multiple Artifact Rejection Algorithm) + ICA (independent component analysis) - based artifcat correction method
+-addresses two problems: 
+ - artifact correction (improve on what is already currently available)
+ - handling of growing studies by keeping track pf already preprocesed datasets
+-EEGLAB extension
+-three basic sections - project, configuration and quality assessment
+-workflow:
+ raw data -> bad channel identification and then subsequently remove it -> artifact correction -> interpolation and quality assessment -> preprocessed categorised into Good, Bad or OK
+-bad channels are those with low signal to noise ratio, identified using PREP pipeline or EEGLAB plugin clean_rawdata()
+-validation was done only on PDS's of resting EEG with eyes open
+
+
+
+EEG microstates as a tool for studying the temporal dynamics of whole-brain
+neuronal networks: A review
+
+-electrical microstates - sucessive short time periods during which config of the scalp potential field remains semi-stable
+-represent basic building blocks of the chain of spontaneous concious mental processes
+-microstate analysis:
+ EEG -> filtered -> cleaned EEG -> determination of GFP peaks -> clustering of all maps -> determination of optimal clusters -> fitting cluster maps to original EEG by spatial correlation
+-microstate model has no constraint on spatial distribution of brain activity, but constrains the activity of all the sources contirbuting to a single microstate to a commone time-course
+-microstate time series have a clearly structured temporal organization that is neither random nor predetermined, but cannot be predicted
+-approach has been used in cases of dementia, narcolepsy, panic disorder, mulitple sclerosis, head injusry, stroke and diplegia
+-possible issues - standardisation of the approach (ie number of microstates to be used and the way to define them), optimal number of clusters should be defined, sources underlying the different microstates
+
