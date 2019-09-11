@@ -1,0 +1,25 @@
+Microstate EEGlab toolbox: An introductory guide
+A. Poulsen et al, 2018.
+
+Summary
+•	The core of microstate analysis is to segment the EEG recordings into microstates using a clustering method.
+•	The Microstate EEGlab toolbox aims to facilitate microstate analysis in Matlab by providing a toolbox that is fully transparent with respect to all the steps of analysis and which allows the integration of any clustering algorithm
+•	In microstate analysis it is the goal to segment the recorded EEG time samples into microstate classes (clusters), so EEG samples that belong to the same class have as similar topographies as possible.
+•	Microstate toolbox clustering algorithms: K-means, modified K-means, Topographic Atomize and Agglomerate Hierarchical Clustering (TAAHC).
+•	Measures of fit are used to estimate how well different microstate segmentations explains the EEG, used to estimate the prototypes.
+•	GEV: Global Explained Variance is a measure of how similar each EEG sample is to the microstate prototype it has been assigned to. The higher the GEV the better.
+•	In other hand, the Cross-Validation criterion is a measure related to the residual noise and the goal is therefore to obtain a low value.
+•	Dispersion is a measure of average distance between members of the same cluster.
+•	Guide to the toolbox tutorial: Microstate Analysis on spontaneous EEG data
+o	The tutorial data consists of EEG from 4 subjects of the age group 25-44. The datasets have been preprocessed using the Automagic artefact correction and have been filtered with a highpass filter of 1 HZ and a lowpass filter of 30 Hz.
+o	First, they started EEGlab and loaded each of the four datasets with Load existing dataset.
+o	Second, they selected data for microstate segmentation.
+o	Third, the selected EEG was segmented into a predefined number of microstate prototypes with the goal of maximizing the similarity between the EEG samples and the prototypes of the microstates they were assigned to.
+o	Fourth, after having clustered the EEG with multiple numbers of microstates clusters was necessary to select which number of clusters to use for further analysis.
+o	Fifth, they plotted microstate prototype topographies to review the result of the microstate segmentations for different numbers of microstates.
+o	Sixth, they reviewed the quality of the different microstate segmentations using GEV and the CV criterion.
+o	Eight, back-fit the microstates on EEG (labeling the EEG data with the class of the microstate prototype that is most similar).
+o	Ninth, the microstate labels were temporally smoothed after the back-fitting to reduce non-logic relationships between data.
+o	Tenth, they illustrated the microstate segmentation between 4,200 and 5,700 ms of the EEG dataset of subject 1.
+o	Finally, they calculated microstate statistics using Calculate microstate statistics function.
+This paper guide is aiming to make easier to adapt to microstate analysis for researchers new to the field (like our team) by explaining the use of an open source toolbox in Matlab.
