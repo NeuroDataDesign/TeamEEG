@@ -1,0 +1,31 @@
+Introduction
+  Advantages of EEG
+    •	EEG offers a wealth of information about the brain processes due to its high temporal resolution. 
+    •	EEG measures can be included in large biomarker initiative since they are altered in various diseases like ADHD, autism spectrum disorders, depression and anxiety disorders, dementia and mild cognitive impairment. 
+    •	Task-related EEG also differs in healthy individuals and patients and helps in better understanding the mental processing steps when a person performs a particular task.
+  Major challenges in using EEG data
+    •	EEG signals are full of artifacts due to a number of factors: environmental factors like temperature, air humidity; line noise; subject-related artifacts like eye movements, eye blinks, muscular noise, heart signals, sweating. 
+    •	Artifact correction in EEG from elders, children, and clinical studies is most of the times unachievable. 
+  Existing EEG preprocessing pipelines
+    •	The PREP pipeline offers a standardised EEG preprocessing pipeline with line noise removal and interpolation of artifactual channels.
+    •	The Harvard Automated Preprocessing Pipeline for EEG (HAPPE) offers a better artifact removal method, that is, wavelet-enhanced independent component analysis and Multiple Artifact Rejection Algorithm (MARA).
+    •	The Computational Testing for Automated Preprocessing (CTAP) toolbox, in addition to what the above-mentioned pipelines have to offer, also allows users to compare different pipelines.
+    •	CTAP and HAPPE also give the quality metrics of the EEG data.
+  Purpose of developing Automagic
+    •	The data quality metrics offered by CTAP and HAPPE like the number of interpolated channels, bad channels, bad epochs are very dependent on how well the preprocessing algorithms did. Automagic offers an alternate quality metric by quantifying the absolute signal strength.
+    •	Automagic is capable of handling EEG data being generated from growing studies.
+    •	Automagic supports the BIDS (Brain Imaging Data Structure) format and hence facilitates data sharing. 
+    
+The Automagic EEG preprocessing pipeline
+   The preprocessing pipeline has three sections:
+      Project section - Define the i/p and o/p folders.
+      Configuration section - Allows selection of the preprocessing steps (Bad channel identification, and bad channel and artifact removal).
+        •	For bad channel identification, Automagic uses the PREP pipeline where first the EEG is high-pass filtered with a cutoff frequency of 1 Hz, power line noise is removed, robust average reference is calculated.
+        •	Alternatively, a less expensive and faster way of bad channel identification is using clean_rawdata() EEGLAB plugin followed by Artifact Subspace Reconstruction method. 
+        •	After the identification and removal of bad channels, EEG data is filtered using high or low pass or notch filter
+        •	Artifact correction is achieved using EOG regression, MARA, and robust Principal Component Analysis (rPCA).
+   Interpolation and Quality section
+        •	Spherical interpolation is done.
+        •	Quality is measured by the ratio of bad channels (RBC), ratio of data with overall height amplitude (OHA), ratio of time points of high variance (THV), ratio of channels with high variance  (CHV).
+        •	Based on the above-mentioned quality measures, the data can be classified as ‘Bad’, ‘Good’ or ‘OK’. 
+
