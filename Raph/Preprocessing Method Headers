@@ -1,0 +1,22 @@
+1. systemDependentParse.m
+  - Input = [EEG, EEGSystem,ChannelReductionParams, MARAParams, ORIGINAL_FILE]
+          - EEG = EEG Data
+          - EEGSystem is a struct wit fields: 'name', 'sys10_20', 'refChan', 'locFile' and 'fileLocType'
+          - ChannelReductionParams field 'tobeExcludedChanswhich' array of indicies of chan to exclude
+          - MARAParams parameters for MARA data analysis
+          - ORIGINAL_FILE address of file where EEG data is loaded from (not always needed) only with *.fif files
+ - OutPut = [EEG, EOG, EEGSystem, MARAParams]
+ - Summary = This fucntion orginizes the inputs and parses through them in order to see what data is included and what data needs to be proccesed. For example if no reference chan is included a channel of all zeros is included at the end as the new reference channel. Or the EEG and EOG data is sepretaed to help with analysis later.
+ 
+ 2. preprocess.m
+- Input = [data, params]
+          -data = EEGLAB data structure 
+          -params = specifies preproccessing parameters if omitted (defualt is used)
+
+-Output = [EEG, varargout]
+          - EEG = data after proccesing
+          - varargout = list of plost obtained during preproccesing
+
+-Summary = Does all the preproccesing specified by the params variable. params is a struc with fields = 'FilterParams', 'CRDParams', 'RPCAParams', 'MARAParams', 'PrepParams','InterpolationParams', 'EOGRegressionParams', 'EEGSystem','ChannelReductionParams', 'HighvarParams', 'Settings', 'DetrendingParams', and 'ORIGINAL_FILE'
+If anything is ommited deafult values are used (RecommendedParameters.m)
+using struct([]) for a certain field signifies not to use that preproccessing function. 
