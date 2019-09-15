@@ -81,48 +81,43 @@ using struct([]) for a certain field signifies not to use that preproccessing fu
   -Summary = Unzip and add the RPCA package
   
 12. addPreprocessingPaths.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = [params]
+           -params fields: PrepParams, CRDParams, RPCAParams, and MARAParams
+  -Output = [parts]
+  -Summary = Unzip and add all the required packages to the path
   
 13. addPREP.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = n/a
+  -Output = n/a
+  -Summary =  Unzip and add the PREP package
   
 14. addMARA.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = n/a
+  -Output = n/a
+  -Summary = Unzip and add the MARA package
   
 15. addICLabel.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = n/a
+  -Output = n/a
+  -Summary = Unzip and add the ICLabel package
   
 16. addEEGLab.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input =
+  -Output = path
+  -Summary = Add the eeglab package to the path The need for this function is to remove the path to few folders of eeglab which make conflicts with other MATLAB functions.
   
 17. addCRD.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = n/a
+  -Output = n/a
+  -Summary = Unzip and add the CRD package
   
 18. RecommendedParameters.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Summary = Class of the recomended parameters
   
 19. PreprocessingConstants.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Summary = class containing static constant variables 
   
 20. DefaultParameters.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Summary = class containing default parameters for
   
 
