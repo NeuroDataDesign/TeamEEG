@@ -41,40 +41,44 @@ using struct([]) for a certain field signifies not to use that preproccessing fu
   -Summary = prep robust average referenceing and its channel rejection on the input EEG. Does not change EEG_in or EOG_in. Just used to identiy bad channels
   
 5. performMARA.m
-  -Input = []
-  -Output = []
-  -Summary = 
-  
-  
+  -Input = [EEG,params]
+          -params = struct with field = 'chanlocMap' and 'high'
+  -Output = [EEGClean]
+  -Summary = perform Independent Component Analysis (ICA) on the high passsed data and classifies bad components using MARA. Output data is just the EEG data after being cleaned using ICA
+ 
 6. performICLabel.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = [EEG, Params]
+          -params = fields 'brainTher', 'muscleTher', 'eyeTher', 'heartTher', 'lineNoiseTher', 'channelNoiseTher', 'otherTher', 'includeSelected' and 'high'
+  -Output = [EEG] 
+  -Summary = perform Independent Component Analysis (ICA) on the high passsed EEG and classifies bad components using ICLabel
 
 7. performHighvarianceChannelRejection.m
-  -Input = []
-  -Output = []
-  -Summary =
+  -Input = [EEG_in, params] 
+            -field of 'sd' for standard deviation threshold 
+  -Output = [EEG_out]
+            -EEG data with a field, 'badChans', for the bad channels
+  -Summary = reject bad channels based on high standard deviation
 
 8. performFilter.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = [EEG, params]
+          -params = struct w/ field: 'notch', 'high' and 'low'
+  -Output = [EEG]
+  -Summary = perform a high pass, low pass and notch filter
   
 9. performEOGRegression.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = [EEG, EOG, params]
+  -Output = [EOGregressed]
+  -Summary = Remove the EOG(Electrooculography) noise from the EEG data
   
 10. performCleanrawdata.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = [EEG_in, EOG_in, params]
+  -Output = [EEG_out,EOG_out]
+  -Summary = channels will be removed, data will be cleaned and high passed filtered as specified in clean_rawdata()
   
 11. addRPCA.m
-  -Input = []
-  -Output = []
-  -Summary = 
+  -Input = n/a
+  -Output = n/a
+  -Summary = Unzip and add the RPCA package
   
 12. addPreprocessingPaths.m
   -Input = []
