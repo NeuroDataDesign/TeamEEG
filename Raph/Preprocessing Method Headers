@@ -8,15 +8,117 @@
  - OutPut = [EEG, EOG, EEGSystem, MARAParams]
  - Summary = This fucntion orginizes the inputs and parses through them in order to see what data is included and what data needs to be proccesed. For example if no reference chan is included a channel of all zeros is included at the end as the new reference channel. Or the EEG and EOG data is sepretaed to help with analysis later.
  
- 2. preprocess.m
-- Input = [data, params]
+ 2. preprocess.m (Main Preproccesing function)
+  - Input = [data, params]
           -data = EEGLAB data structure 
           -params = specifies preproccessing parameters if omitted (defualt is used)
 
--Output = [EEG, varargout]
+  -Output = [EEG, varargout]
           - EEG = data after proccesing
           - varargout = list of plost obtained during preproccesing
 
--Summary = Does all the preproccesing specified by the params variable. params is a struc with fields = 'FilterParams', 'CRDParams', 'RPCAParams', 'MARAParams', 'PrepParams','InterpolationParams', 'EOGRegressionParams', 'EEGSystem','ChannelReductionParams', 'HighvarParams', 'Settings', 'DetrendingParams', and 'ORIGINAL_FILE'
+  -Summary = Does all the preproccesing specified by the params variable. params is a struc with fields = 'FilterParams', 'CRDParams', 'RPCAParams', 'MARAParams', 'PrepParams','InterpolationParams', 'EOGRegressionParams', 'EEGSystem','ChannelReductionParams', 'HighvarParams', 'Settings', 'DetrendingParams', and 'ORIGINAL_FILE'
 If anything is ommited deafult values are used (RecommendedParameters.m)
-using struct([]) for a certain field signifies not to use that preproccessing function. 
+using struct([]) for a certain field signifies not to use that preproccessing function.
+
+
+
+3. performRPCA.m
+    -Input = [data,params]
+            -data = EEGLAB data structure 
+            -params = struct with fields: 'lambda', 'tol', and 'maxIter' to specify corresponding parameters in inexact_alm_rpca.m
+    
+    -Output = [data,noise]
+    
+    -Summary = Runs the function 'inexact_alm_rpca.m' with the EEG data and specified params and outputs clean data and the noise found
+    
+    
+4. performPrep.m
+  -Input = [EEG_in, EOG_in, prepParams, refChan]
+  
+  -Ouput = [EEG_out, EOG_out]
+  
+  -Summary = prep robust average referenceing and its channel rejection on the input EEG. Does not change EEG_in or EOG_in. Just used to identiy bad channels
+  
+5. performMARA.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+  
+6. performICLabel.m
+  -Input = []
+  -Output = []
+  -Summary = 
+
+7. performHighvarianceChannelRejection.m
+  -Input = []
+  -Output = []
+  -Summary =
+
+8. performFilter.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+9. performEOGRegression.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+10. performCleanrawdata.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+11. addRPCA.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+12. addPreprocessingPaths.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+13. addPREP.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+14. addMARA.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+15. addICLabel.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+16. addEEGLab.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+17. addCRD.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+18. RecommendedParameters.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+19. PreprocessingConstants.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+20. DefaultParameters.m
+  -Input = []
+  -Output = []
+  -Summary = 
+  
+
