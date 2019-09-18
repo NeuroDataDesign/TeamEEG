@@ -1,0 +1,157 @@
+Introduction
+  Advantages of EEG
+    •	EEG offers a wealth of information about the brain processes due to its high temporal resolution. 
+    •	EEG measures can be included in large biomarker initiative since they are altered in various diseases like ADHD, autism spectrum disorders, depression and anxiety disorders, dementia and mild cognitive impairment. 
+    •	Task-related EEG also differs in healthy individuals and patients and helps in better understanding the mental processing steps when a person performs a particular task.
+  Major challenges in using EEG data
+    •	EEG signals are full of artifacts due to a number of factors: environmental factors like temperature, air humidity; line noise; subject-related artifacts like eye movements, eye blinks, muscular noise, heart signals, sweating. 
+    •	Artifact correction in EEG from elders, children, and clinical studies is most of the times unachievable. 
+  Existing EEG preprocessing pipelines
+    •	The PREP pipeline offers a standardised EEG preprocessing pipeline with line noise removal and interpolation of artifactual channels.
+    •	The Harvard Automated Preprocessing Pipeline for EEG (HAPPE) offers a better artifact removal method, that is, wavelet-enhanced independent component analysis and Multiple Artifact Rejection Algorithm (MARA).
+    •	The Computational Testing for Automated Preprocessing (CTAP) toolbox, in addition to what the above-mentioned pipelines have to offer, also allows users to compare different pipelines.
+    •	CTAP and HAPPE also give the quality metrics of the EEG data.
+  Purpose of developing Automagic
+    •	The data quality metrics offered by CTAP and HAPPE like the number of interpolated channels, bad channels, bad epochs are very dependent on how well the preprocessing algorithms did. Automagic offers an alternate quality metric by quantifying the absolute signal strength.
+    •	Automagic is capable of handling EEG data being generated from growing studies.
+    •	Automagic supports the BIDS (Brain Imaging Data Structure) format and hence facilitates data sharing. 
+    
+The Automagic EEG preprocessing pipeline
+   The preprocessing pipeline has three sections:
+      Project section - Define the i/p and o/p folders.
+      Configuration section - Allows selection of the preprocessing steps (Bad channel identification, and bad channel and artifact removal).
+        •	For bad channel identification, Automagic uses the PREP pipeline where first the EEG is high-pass filtered with a cutoff frequency of 1 Hz, power line noise is removed, robust average reference is calculated.
+        •	Alternatively, a less expensive and faster way of bad channel identification is using clean_rawdata() EEGLAB plugin followed by Artifact Subspace Reconstruction method. 
+        •	After the identification and removal of bad channels, EEG data is filtered using high or low pass or notch filter
+        •	Artifact correction is achieved using EOG regression, MARA, and robust Principal Component Analysis (rPCA).
+   Interpolation and Quality section
+        •	Spherical interpolation is done.
+        •	Quality is measured by the ratio of bad channels (RBC), ratio of data with overall height amplitude (OHA), ratio of time points of high variance (THV), ratio of channels with high variance  (CHV).
+        •	Based on the above-mentioned quality measures, the data can be classified as ‘Bad’, ‘Good’ or ‘OK’. 
+        
+
+Summaries of the automagic preprocessing codes on github
+1.	DefaultParameters.m 
+•	Class file with constant properties.
+•	Values for the filter, clean_rawdata(), PREP, high variance, interpolation parameters, rPCA, MARA, IC Label, EOG regression, channel reduction, detrending, EEG system, and Settings parameters are initialized using the struct class.
+•	A value of struct([]) would deactivate the corresponding operation.
+•	A value of struct() will be initialized with the default value.
+•	An empty field will be initialized with the default value.
+•	Performing PREP, interpolation, and detrending are optional.
+
+2.	PreprocessingConstants.m
+•	Class file with constant properties.
+•	Constants for filtering, EEGLab, clean_rawdata(), PREP, rPCA, MARA, IC Label, EOG regression, EEG system, and Settings are assigned using struct class.
+•	Creates a function for library paths so that various EEGLab packages can be used in the preprocessing.
+
+3.	RecommendedParameters.m
+•	Class file with constant properties.
+•	Assign the recommended values for the filter, clean_rawdata(), PREP, high variance, interpolation parameters, rPCA, MARA, IC Label, EOG regression, channel reduction, detrending, EEG system, and Settings parameters
+
+4.	addCRD.m
+•	Function file
+•	Unzip and add the clean_rawdata() package
+
+5.	addEEGLab.m
+•	Function file
+•	Adding the EEGLab package to the path
+•	returns path to the EEGLab folder.
+
+6.	addICLabel.m
+•	Function file
+•	Unzip and add the ICLabel package
+
+7.	addMARA.m
+•	Function file
+•	Unzip and add the MARA package
+
+
+
+8.	addPreprocessingPaths.m
+•	Function file
+•	Variable number of input arguments
+•	Returns all the paths in the EEG folder
+•	arguments:varargin
+•	Unzips and adds all the required packages to the path
+•	In the argument specify a structure with optional fields like PrepParams etc since it makes sure that the package is required.
+•	If varargin or any of its fields are omitted, default values are used
+9.	addRPCA.m
+•	Function file 
+•	Unzips and adds the RPCA package
+
+10.	performCleanrawdata.m
+•	Function file
+•	Returns the EEG and EOG structure
+•	Calls the clean_artifacts() function which has 5 subfunctions namely:
+	clean_flatlines()-This is to remove a channel that has a dead flat line longer than certain length.
+	clean_drifts()-This is an IIR filter.
+	clean_channels()/clean_channels_nolocs()-This is to reject so-called 'bad channels'. If channel location data is available, it calculates each channel's correlation to its RANSAC reconstruction for each window. If correlation is <0.85 in >40 % times, channel is identified as bad.
+	clean_asr()- It does not detect bad channels, but instead, detects bad windows in the data (bursts of noise) and tries to interpolate data based on the rest of the EEG signal.
+	clean_windows()-It rejects windows of data even after ASR. 
+
+11.	performEOGregressed.m 
+•	Function file
+•	Returns the EEG structure after EOG has been removed
+•	Formula used : EEG-EOG*(EOG\EEG) [Finds the proportion of contribution of EOG to each EEG channel and subracts it from the EEG signals]
+
+12.	performFilter.m
+•	Function file
+•	Returns the EEG structure after the high, low and notch filtering
+•	Uses the EEGLab pop_eegfiltnew()
+
+13.	performHighVarianceChannelRejection.m
+•	Function file
+•	Returns the list of channels that need to be removed
+•	Computes the standard deviation of the EEG channels using nanstd() matlab function
+•	If the standard deviation of the channels is greater than the threshold then they are removed using pop_select() EEGLab function.
+
+14.	performICLabel.m
+•	Function file
+•	Output is the cleaned EEG signal
+•	High pass filtering is done using the EEGLab function pop_eegfiltnew()
+•	The ICA is run on the filtered EEG signal using the EEGLab runica() function
+•	The ICs are classified as brain, muscle, heart, line noise, channel noise, other components and accordingly subtracted from the EEG signal using EEGLab function pop_subcomp().
+
+
+15.	performMARA.m
+•	Function file
+•	Output is the cleaned EEG signal
+•	High pass filtering is performed using pop_eegfiltnew()
+•	pop_runica() function from EEGLab is called for performing ICA.
+•	eeg_checkset() function from EEGLab is used to check if ICA components are present.
+•	EEGLab function MARA() is used here which extracts ICs and classifies them whether they are artifacts or the EEG signal. 
+•	pop_selectcomps_MARA() EEGLab function is called to display the components with checkbox to check them for artifact removal.
+•	The artifacts are removed from the data using pop_subcomp() EEGLab function.
+
+16.	performPrep.m
+•	Function file
+•	EEG, EOG structures along with the parameters for robust average referencing and the index of the reference channel are the input to the function. 
+•	prepPipelne() function is called
+•	EEGLab function pop_select() is used to remove the bad channels from EEG data
+
+17.	performRPCA.m
+•	Function file
+•	EEG data and noise are returned
+•	The inexact_alm_rpca() function is called to perform rPCA. 
+
+18.	preprocess.m
+•	The main function file that calls the rest of the functions and uses of the objects created by the classes in the preprocessing folder of automagic.
+•	Outputs the preprocessed EEG signal and the plots of the data.
+•	Uses all the functions in the preprocessing folder in the following order:
+	addPreprocessingPaths()
+	systemDependentParse()
+	performPrep()
+	performCleanrawdata()
+	performFilter()
+	performEOGRegression()
+	performICLabel()
+	performMARA()
+	performRPCA()
+	performHighVarianceChannelRejection
+
+19.	systemDependentParse()
+•	Function file
+•	It makes sure that the EEG data is ready for the preprocessing by making sure that each channel location field is part of EEG.
+•	It also makes sure that a reference is selected.
+
+
