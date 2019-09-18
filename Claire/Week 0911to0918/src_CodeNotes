@@ -1,0 +1,206 @@
+Automatic src folder
+Codes:
+	Block.m
+	ConstantGlobalValues.m
+	MFquestdlg.m
+	Project.m
+	Subject.m
+	calcQuality.m
+	getCodeHistoryStruct.m
+	getLogTextStruct.m
+	license.txt
+	popup_msg.m
+	rateQuality.m
+
+License.txt
+	Just has copyright and liability statement
+
+rateQuality.m 
+function
+Rates datasets based on quality metrics found with calcQuality
+Inputs: structure of quality scores, structure of cutoffs for the various metrics that define good and bad datasets
+function does some work to make sure parameters are all good and there
+Then, it categorizes the datasets with respect to each of the metrics
+Last, it combines the ratings based on worst of how the dataset was ranked
+Output is the structure with the rankings
+
+calcQuality.m
+Function 
+Calculates quality measures based on the 4 metrics
+Inputs: EEG structure, list of bad channels
+Function parses and checks parameters
+Does a common average reference on the data before calculating the metrics
+Does the calculations
+Output is all of the quality metrics into a structure Q
+
+popup_msg.m
+Function
+Makes a message pop up
+Inputs: message string, title of the message string
+If you’re not using desktop, it’ll just print the message
+Goes and tries to find first the rating GUI, then main GUI, then import results GUI
+Gets the position of the GUI it finds
+If title says ‘Error’ then it makes an error
+Creates message box
+Sets message box position to be relative to the GUI it found
+
+getCodeHistoryStruct.m
+Function 
+No inputs
+Output is a structure with the lines of code to replicate the preprocessing
+
+MFquestdlg.m
+Function
+Pops up a question dialog box and has buttons on it for the user to press to answer the question
+Inputs: position on screen, question, title, buttons, 
+Sets a bunch of defaults based on number of inputs
+Sets some more things about the box
+Honestly this is a lot of particulars, might have whoever is writing the GUI do this so that eveything looks consistent
+Internal functions:
+doFigureKeyPress
+doControlKeyPress
+doDelete
+deletes figure, so closes it
+
+getLogTextStruct.m
+function
+no inputs
+Output is a structure of the text to create the log file at the end of preprocessing, each line for if a step was used
+Not quite sure yet the syntax but I’ll get there
+
+Everything from here are class definition files
+
+ConstantGlobalValues.m
+Sets constants for application
+Includes defining some strings that mean certain things, key shortcuts
+Sets up folder structure, ie paths
+Sets up state files
+
+Subject.m
+Class representing a single subject in the data folder
+Corresponds to a folder, containing one or more blocks, 
+Methods allow you to set the data and results folders, or update them if loaded from elsewhere, also extracts the name of the patient for labeling purposes
+
+Block.m
+Class representing the raw and corresponding preprocessed data file
+Has all the info for those files, file names, parameters, sampling rates, prefixes, ratings, bad channels, if it was manually rate, you name it
+This also defines all of the methods you can do to a block, which is basically the work horse of the program
+updateRatingInfoFromFile
+Checks to see if its been preprocessed already, if yes, load info, if no, initialize processing
+potentialResultAddress
+Does the above check
+updateAdresses
+For if you load from another computer
+setRatingInfoAndUpdate
+Inputs structure of updates to be made, changes the block if they don’t match what’s already there
+Preprocess
+The whole fuckin thing
+Interpolate
+Interpolates, updates structures
+saveRatingsToFile
+writeLog
+Uses the function getLogTextStruct to write up a log
+getCurrentQualityScore
+Just returns the quality score
+get.imageAddress
+Gets all the image files made during preprocessing
+Then there’s a bunch of boolean operations that are like “is it good?”
+loadEEGFromFile
+Accommodates different file types
+saveFiles
+Inputs are the EEG, automatic, fig structures, saves em
+updatePrefix
+Based on rating info it updates the name of the file
+updateResultAddress
+Based on rating info
+extractPrefix
+Given result address, get prefix
+getIdxQualityScore
+Can’t tell what this one does
+extractReducedAddress
+Return address of reduced file given result address and down sample rate
+extractUniqueName
+From address, filename, and subject
+Returns a unique name
+hasInformation
+Boolean if has been processed
+getRateFromPrefix
+Does what it says, input is a prefix
+isValidPrefix
+Just checks if it fits in definitions
+
+Project
+Class representing a project, created in main GUI, has all info 
+Properties: current block to look at, all kinds of visualization parameters, quality cutoffs and score indices, processing parameters, subjects, mapping blocks, stateAddress, lists of all blocks, and lists corresponding to blocks of each rating, CGV structure
+Methods:
+Project (setting it up)
+Gotta input folder paths, name, parameters
+getCurrentBlock
+Gets block from current index
+getNextIndex
+Inputs are the project and booleans saying if the block can have the given ratings
+getPreviousIndex
+Same as above
+preprocessAll
+Go through all files in data folder and preprocess them
+interpolateSelected
+Execute the interpolations
+updateRatingLists
+Input is the project and the block to update with
+updateRatingStructures
+Goes through and looks for new or deleted files in data and results folders, updates info based on those,
+Good for adding data or merging projects
+getQualityRatings
+Input cutoffs
+Returns quality ratings of all the blocks given the cutoffs
+applyQualityRatings
+Modify ratings based on the cutoffs based on the cutoffs inputted
+Can say to only apply to those you didn’t manually rate already in the GUI updateAddressesFromStateFile
+Only called when project loaded from a state file
+Need to put in where the new folder addresses are
+getRatedCount
+# files already rated
+toBeInterpolatedCount
+Exactly what it sounds like
+areFoldersChanged
+checks to see if anything in data or results folders has changed
+Gotta call to update data structures if it has changed
+exportToBIDS
+Input a bunch of info and it creates the BIDS info
+This might be its separate thing, is really specific to one need
+saveProject
+What it says
+listSubjectFiles
+listPreprocessedSubjects
+createRatingStructure
+Initializes all data structures based on data and results folders
+Called when you’re first building your project file
+setName
+Just names the project
+setDataFolder
+Sets the address of the data folder
+setResultsFolder
+Sets the address of the results folder
+checkExistings
+Checks to see in results folder if a results file exists and asks if ya wanna overwrite
+writeToLog
+Inputs are a message and block to write message to
+For weird things that happen during processing that need to be noted
+updatemainGUI
+update data in the main GUI
+addSlash
+Input is a folder
+addAutomagicPaths
+Adds everything into Matlab path
+makeStateAddress
+Returns address of the state file
+makeRatingManually
+Returns the quality rating if rating was not done manually, otherwise says manually rated
+For visualization in ratings GUI
+listSubjects
+Input is root folder
+Output is a list of subjects in the folder
+dirNotHiddens
+Returns list of files but not the weird ass hidden files
+isFolderChanged
+Checks to see if number of files or folders have changed in a folder, but not if those files have changed
