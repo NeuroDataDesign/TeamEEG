@@ -1,0 +1,52 @@
+# Find area of a circle from radius:
+r = float(input("Enter radius of circle: "))
+A = (r**2)*(22/7)
+print (A)
+# Find the day given the date:
+Year = float(input("Enter the year:"))
+Month = float(input("Enter the month in number: "))
+Day = float(input (" Enter the day:"))
+y1 = Year // 100
+y2 = (y1/4) - (2*y1)
+y3 = Year % 100
+y4 = y3 * (5/4)
+if (Month ==1):
+m = 1
+elif (Month ==2):
+m = 4
+elif (Month ==3):
+m = 4
+elif (Month ==4):
+m = 0
+elif (Month ==5):
+m = 2
+elif (Month ==6):
+m = 5
+elif (Month ==7):
+m = 0
+elif (Month ==8):
+m = 3
+elif (Month ==9):
+m = 6
+elif (Month ==10):
+m = 1
+elif (Month ==11):
+m = 4
+else
+m = 6
+D = y2 + y4 + m + Day
+if D % 7 == 0
+print ("Sunday")
+elif (D % 7 == 1):
+print ("Monday")
+elif (D % 7 == 2):
+print ("Tuesday")
+elif (D % 7 == 3);
+print ("Wednesday")
+elif (D % 7 == 4):
+print ("Thursday")
+elif (D % 7 == 5):
+print ("Friday")
+els:
+print ("Saturday")
+
