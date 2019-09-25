@@ -1,0 +1,51 @@
+GUI code
+
+Codes:
+
+BIDSinputGUI.m
+DefaultsVisualisationParameters.m
+loadConfigGUI.m
+loadGUI.m
+mainGUI.m
+qualityratingGUI.m
+ratingGUI.m
+settingsGUI.m
+
+BIDSinputGUI
+dataset to the form of BIDS (brain imaging data str)
+converts from rawBVA, derivative BVA, raw SET or derivative set
+
+loadConfigGUI
+define the data and parameters of the project
+closes when presses cancel
+
+loadGUI
+function
+gets data and state path, and location 
+input name, path, folder to load the project
+
+MainGUI - main func, all other function and guis called from within this
+input units,position 
+set constant values, title to current version, load state and currrent project
+load the current state, address,history -> initialise if current version does not correspond or main state file does not exist
+update from state file - project list, current project and update if changes since last time
+update rating structure of project
+get value from user to find selected project
+New project - input EEGsystem parameter, channel parameters, file extension, sampling rate, number of files to be interpolated, channel location
+disable/enable modifiable gui elements - and save gui state
+start rating on current project -> interpolation of selected files , continues to update for any changes
+run preprocessing, 
+load selected project and save the state of the gui or delete the project
+
+qualityratingGUI
+pop up menu for the cutoff values of CHV(channels of high variance), OHA(overall high amplitude), THV (time of high variance) - through sliders for Good, Ok and Bad
+histogram with the ratings based on frequency
+change rating of every file - quality rating to all files or incorporate manual ratings
+commit files
+reset files
+cancel
+
+settingsGUI
+set quality rating parameters (MARA parameters, IClabel parameters)
+filter parameters - highpass, lowpass
+artifact removal - channel noise, eye, muscle, brain, 
