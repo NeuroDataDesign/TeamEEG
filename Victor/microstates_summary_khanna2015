@@ -1,0 +1,35 @@
+EEG Microstates: assessing function of large-scale brain network
+States: topographies of electric potentials over a multichannel electrode array
+Advantages: powerful, inexpensive, clinical translatable
+Resting-state EEG: recordings when subjects are not actively engaged in sensory or cognitive processing
+
+Remarkable properties (quasi-stability):
+1.	A majority of signal (usually>70%) is representable by just a few topographies
+2.	A single map remains dominant for about 80-120ms before abruptly transitioning to another map
+
+Method of microstate analysis: adaptive segmentationclustering analysisindependent component analysis
+
+Parameters: average duration of lifespan, frequency, coverage, topographical shape, amplitude, global explained variance, transition probabilities
+
+Functional interpretation: coordinated activity of neural assemblies that span large areas of the cortex (global)
+
+Applications:
+1.	Microstates as indicators of resting-state brain activity
+	“Atoms of thoughts hypothesis”: network(s) that are activated during a particular microstate represent different states of the conscious mind, each microstate is associated with a different class of mentation that together make up the conscious state
+2.	Link between EEG microstates and resting-state networks(RSNs) of fMRI
+	Microstate time series have scale-free dynamics
+	Resting-state EEG and fMRI may reflect the same underlying neurophysiological processes
+	Resting-state EEG may complement fMRI in the study of RSNs
+3.	Microstates in neuropsychiatric disease
+	Schizophrenia: reduced presence of microstates B and D, increased presence of C (and perhaps A). Microstate changes in schizophrenia seem to reflect deteriorated connectivity, decreased functional organization, or increased noise in brain processes.
+	Alzheimer’s-related dementia: Decreased overall average microstate life spans.
+	Other disorders: depression, Tourette syndrome, panic disorder
+	Summary: an alternative, novel approach for studying functional connectivity, monitoring illness through objective neurophysiological biomarkers
+4.	Microstates and therapeutic interventions: microstates parameters may be useful indicators of therapy efficiency in patients
+5.	Examine changes in brain developmental and behavioral states
+
+Factors affecting microstate parameters: carefully control factors when studying microstates, may be correlate with EEG signal characteristics. 
+
+Future directions: 
+1.	Large-scale study of microstates, standardization of analytical method, test-retest reliability of microstate dynamics within subject
+2.	Relation between EEG microsites and global functional connectivity remains unclear
