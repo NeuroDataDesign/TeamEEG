@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
 
+
 """
     Cian Scannell - Oct-2017 (https://github.com/cianmscannell/RPCA)
     Computes rpca separation of M into L(low rank) and S(Sparse) using the parameter lam
@@ -19,8 +20,8 @@ def rpca(M,lam,tol,maxIter):
     -Output = [L, S]
             L = Corrected Data (Low rank matrix)
             S = Noise removed from the data (Sparse Matrix)
-            M = L + S
-
+            M = L + S        
+    
     -Summary = Performs a Robust Principal Component Analysis on the EEG data with
             the specified parameters: Lamda, Tolerance, and Maximum number of Iterations.
             The function outputs the EEG data with the noise removed as well as the nosie
@@ -29,14 +30,13 @@ def rpca(M,lam,tol,maxIter):
 
     Nr = M.shape[0]
     Nc = M.shape[1]
-
     Y = M / np.maximum(np.linalg.norm(M,2), np.linalg.norm(M,np.inf) / lam)
 
     mu = 1/ (np.linalg.norm(M,2))
     rho = 1.5
 
-    S = np.zeros((Nr,Nc))
-
+    S = np.zeros((Nr,Nc))    
+    
     error = 10
     count = 0
     isRunning = True;
@@ -47,11 +47,10 @@ def rpca(M,lam,tol,maxIter):
         Y = Y + mu*(M-L-S)
         mu = mu*rho
         error = np.linalg.norm(M-L-S,'fro') / np.linalg.norm(M,'fro')
-        count += 1
+        count += 1 
         if (count >= maxIter):
             isRunning = False;
-
-
+        
     L = L.reshape(Nr,Nc)
     S = S.reshape(Nr,Nc)
 
@@ -59,11 +58,10 @@ def rpca(M,lam,tol,maxIter):
 
 def soft_thres(x,eps):
 """
-    Cian Scannell - Oct-2017
+    Cian Scannell - Oct-2017  
     Soft thresholds a matrix x at the eps level
     i.e ST(x,eps)_ij = sgn(x_ij) max(|x_ij| - eps, 0)
 """
     a = np.sign(x)
     b = np.maximum((np.fabs(x) - eps), 0)
     return np.multiply(a,b)
-
