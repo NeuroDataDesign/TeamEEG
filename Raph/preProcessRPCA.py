@@ -57,11 +57,11 @@ def rpca(M,lam,tol,maxIter):
     return L,S
 
 def soft_thres(x,eps):
-"""
+    """
     Cian Scannell - Oct-2017  
     Soft thresholds a matrix x at the eps level
     i.e ST(x,eps)_ij = sgn(x_ij) max(|x_ij| - eps, 0)
-"""
+    """
     a = np.sign(x)
     b = np.maximum((np.fabs(x) - eps), 0)
     return np.multiply(a,b)
