@@ -1,0 +1,39 @@
+-> calcQuality.m
+ - Input : EEG data, bad channels indices
+ - Output : struct Q with quality matrics
+ - Parses and checks parameters
+ - Performs average reference and calculates the quality metrics OHA, THV, RBC, CHV and MAV.
+
+-> rateQuality.m
+ - Input : struct Q with quality metrics, struct with cutoff values for quality parameters
+ - Output : struct with ratings
+ - Checks if the quality metrics are present and correct
+ - Then it categorizes the data wrt all the quality parameters one-by-one
+ - Combines the ratings depending upon the worst ranked dataset.
+
+-> popup_msg.m
+ - Input : message string, title
+ - Output : pop-up window containing message
+ - First finds the rating GUI, main GUI and then imports results GUI
+ - Determines the positions of these GUIs
+ - If the title is 'Error' then creates an error
+ - Creates message window
+ - Sets window position according to the GUI if found.
+
+-> getCodeHistoryStruct.m
+ - Input : None
+ - Output : struct with code replicating preprocessing
+
+-> MFquestdlg.m
+ - Input : position, question, title, buttons
+ - creates a pop-up dialog box with question and buttons for user to be able to answer.
+
+-> getLogTextStruct.m
+ - Input : None
+ - Output : Struct for creating the log files for each individual data at the end of preprocessing 
+
+-> ConstanGlobalValues.m
+ - As the name suggests, defines constant values for applications
+
+-> Subject.m
+ - Points to a single subject folder in the whole dataset folder
