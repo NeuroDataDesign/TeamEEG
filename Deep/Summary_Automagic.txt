@@ -1,0 +1,36 @@
+AUTOMAGIC : Standardized preprocessing of big EEG data
+
+
+-Aims to solve the problem of lack of software allowing to work with large as well as growing datasets.
+
+-For ease of data sharing and integration, Automagic provides support to the BIDS (Brain Imaging Data Structure) format as both input and output.
+
+-focuses on standardization of the preprocessing and quality control.
+
+-Structure & Workflow:
+ Contains 3 basic sections:
+ 1. Project
+     -defining the information of EEG data to be processed (such as format, channel locations, Input/Outpot folders etc.)
+ 2. Configuration
+     -selection of preprocessing steps
+ 3. Quality assessment
+     -review the quality of data
+
+-Processing pipeline:
+ raw EEG data -> Bad channel identification -> Bad channel removal -> Artifact correction -> Interpolation and Quality Assessment -> Quality classification -> Export
+
+- Bad channel identification through PREP pipeline and clean_rawdata() EEGLAB plugin (latter being computationally cheaper and faster)
+
+-uses EEGLAB's functions for filtering
+
+-Artifact correction using EOG regression, MARA (ICA-based) and robust principal component analysis (rPCA).
+
+-Quality assessment measures taken into consideration:
+	-Ratio of Bad Channels (RBC)
+	-Ratio of data with overall high amplitude (OHA)
+	-Ratio of timepoints of high variance (THV)
+	-Ratio of channels of high variance (CHV)
+
+- Using any combination of these quality measures, data is classified as 'Good', 'OK' or 'Bad'.
+
+-Validation done using 52 EEG datasets.

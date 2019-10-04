@@ -1,0 +1,31 @@
+Motivation:
+	Lack EEG measures for Large-scale studies(generalization) & Finding biomarkers
+	Major challenges:
+		1. Difficult to obtain EEG recordings with comparable quality between subjects
+		2. Decision on quality metrics is highly subjective and depends on many factors.
+		3. Lack software which allows handling og large, growing datasets.
+		4. Need a principled format to organize, harmonize, and share data.
+	Solutions/Highlights:
+		1. Implement a selection of currently available artifact correction procedures
+		2. Propose a novel quality metrics based on the quantification of the absolute signal strength
+		3. Present Automagic Software to standardlize the above pipeline.
+		4. Automagic handles growing studies and supports BIDS format.
+	
+About Automagic:
+	A MATLAB based toolbox for preprocessing of EEG-datasets.
+	Contains 3 parts: project section, configuration section and quality assessment section.
+	Used by Command line/GUI
+	Workflow:
+		1. Create a project, define a date folder(source) and result folder(target), define configurations
+		2. Import EEG data, preprocess(include bad channel identification and removal, artifact correction)
+		3. Interpolation and quality assessment(classify datasets into 'good', 'OK' or 'bad'), export to BIDS format
+		4. Output filtered EEG/EOG data, detected bad channels, etc., methods logfile
+	Algorithms:
+		1. Bad channel identification: PREP pipeline, EEGLAB plugin clean_rawdata()
+		2. Artifact correction: EOG regression(EOGr), Multiple Artifact Rejection Algorithm (MARA), Noise removal using robust PCA (rPCA)
+		3. Quality measures: Ratio of Bad Channels (RBC), Ratio of timepoints of high variance (THV), Ratio of channels of high variance (CHV)
+	Validation: 
+		1. Validate combining methods
+		2. Assume neural activities(signals) are relatively stable, the similarity between EEG with and without artifacts should increase after preprocessing
+		3. Calculate quality metrics
+	Limitation: not sufficient data for validation

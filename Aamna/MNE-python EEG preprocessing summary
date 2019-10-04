@@ -1,0 +1,13 @@
+MNE-Python’s preprocessing pipeline:
+
+•	Importing data: The two most common formats of the files that MNE can load is Functional Imaging File (FIF) and European Data File (EDF). 
+•	Filtering data: Notch filter (remove powerline contamination), high pass filter (remove slow drifts), low pass filter
+•	Downsampling
+•	Rejecting bad channels and channel interpolation:
+      #	Perform averaging of the signal with artifact rejection algorithms like SSP (Signal Space Projection) and ICA (Independent Component Analysis).
+      #	Visual inspection
+      # Channel interpolation performed by spherical splines
+•	Artifact correction:
+      #	SSP
+      # ICA
+      # Maxwell filter (for removing artifacts caused by head movements)
