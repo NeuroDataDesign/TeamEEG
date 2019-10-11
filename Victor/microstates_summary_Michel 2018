@@ -1,0 +1,20 @@
+EEG microstates as a tool for studying the temporal dynamics of whole-brain neuronal networks: A review, Michel & Koenig, 2018, NeuroImage
+
+Key Conclusions:
+	1. Standard processing pipeline and objective quantifiers should be well defined for analyzing microstates.
+	2. Defining the number of microstates:
+		When comparing the "same" microstates between groups or conditions, optimal number of clusters should be defined in each dataset individually and global criteria should be used.
+		When looking for microstates specific for a certain group or condition, the number should be defined independently for each group or condition.
+		When comparing microstates between studies, to fix the number to four is justifiable yet leaves a good part of the data unexplained
+	3. Basic assumptions of the EEG microstate model: Only one spatial map configuration entirely defines the relevant microstate of the brain at each moment(Winner-take-all)
+	4. Transitions between states and scale-free dynamics of microstates time series may be explained by criticality of a dynamic system.
+	5. A microstate is composed of a bundle of temporally overlapping and spatially synchronized oscillatory events that putatively originate from the same sources.
+	6. Several studies have indicated that EEG microstates are closely associated with RSNs as defined using fMRI.
+
+Important Questions to be solved:
+	1. Computation of microstates and temporal descriptors
+		What methods or pipelines should be used to define microstates?
+		How to define the number of microstates in different studies?
+	2. Does each microstate reflect a distinct conscious mental brain state(elementary building blocks of consciousness)?
+	3. What are the brain sources underlying EEG microstates?
+	4. What is the relationship between functional connectivity and EEG microstates?
