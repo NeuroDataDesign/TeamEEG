@@ -3,7 +3,7 @@ import preProcessRPCA as preprocess
 
 def performRPCA(EEG, lam=-1, tol=1e-7, maxIter=1000):
 
-""" Perform Robust Principle Component Analysis:
+    """ Perform Robust Principle Component Analysis:
 
     Performs a Robust Principal Component Analysis on the EEG data with
     the specified parameters: Lamda, Tolerance, and Maximum number of Iterations.
@@ -28,7 +28,7 @@ def performRPCA(EEG, lam=-1, tol=1e-7, maxIter=1000):
     Noise : double numpy array
         Noise removed from the data, Original EEG = Data + Noise        
     
-"""
+    """
     #Find lamda if not provided using the Automagic algorithim
     col = EEG.shape;
     if (lam == -1): #if no input lamda, calculate its value
