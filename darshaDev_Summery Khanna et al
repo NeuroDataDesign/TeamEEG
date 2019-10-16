@@ -1,0 +1,34 @@
+Folder for all files for Darsha
+Summary of Microstates in Resting-State EEG: Current Status and Future Directions
+Defenitions and terms:
+Lifespan: average length of time a microstate is stable
+Frequency: average number of times a microstate becomes dominant in a second during the entire observation period
+Coverage: fraction of time the microstate is dominant during the observation period
+Amplitude: the average GFP during microstate dominance
+Global explained variance: percentage of total variance of a microstate
+Transition probability: the transition from one microstate to another which is non-random
+Global Field Power(GFP) is the standard deviation of the electric potentials measured by the sensors of the EEG. The GFP is an indication of the instantaneous electric field strength of the brain during the given activity
+Resting State Networks (RSN) are active when the brain is at rest or when there is no activity predominantly done by the brain.
+Microstates
+	EEG offers excellent temporal resolution compared to other modalities like fMRI and is inexpensive and non-invasive.
+	Microstate analysis is a method of interpretation of EEG signals where the electrical potentials of the entire array of electrodes are considered a series of consecutive quasi-stable microstates
+	Microstate analysis is considered globally, ie, the microstate is across all the electrodes connected to the scalp
+	These microstates remain stable for a few milliseconds before transitioning to the nest microstate
+	the alpha wave for example is not considered one discrete entity, but an aggregate of a number of microstates
+	Resting state EEG is found to consist of four topographical maps: right-frontal, left-posterior, left-frontal right-posterior and midline frontal.
+	One of these four are dominant for a short duration (80-120ms) before an abrupt transition to another
+	The microstate of the brain at the moment of receiving input or making a decision is found to influence perception of input or the decision taken
+	Microstates are affected by transitionary and permanent changes to behaviors, activity, age, disease, neural connectivity and network etc.
+	Microstate analysis is not yet standardized and also the repeatability of microstate analysis is not yet established.
+RSNs
+	RSNs are also associated with visual, auditory, memory and other functions
+	Specific RSN activities are theorized to have a correlation with specific microstates
+	The implication is that resting microstates reflect RSN activity
+RSNs and disease:
+	Kindler et al 2011 suggests that the auditory hallucinations that are experienced by people with schizophrenia might be related with abnormality in microstate D
+	Kiruchi et al and Nishida et al indicate a dominance of microstate C to correlate to the functioning of the salience network (the salience network determines which stimuli gets attention when multiple stimuli are present)
+	The lifespan of microstates are significantly smaller in the cases of schizophrenia and dementia
+	Dementia patients were found to have significantly shorter lifespans of microstate C and a reversal of microstate transition patterns from C->D in controls and D->C in subjects
+	Microstate analysis also showed variations in lifespans, centroid locations and frequencies of microstates compared to controls in case of depression, Tourette’s syndrome and panic disorder respectively
+	Administration of neuropathic drugs to healthy subjects resulted in an alteration of microstate characteristics and also   affected memory and cognition in those subjects
+	Microstate characteristics also show great variations even in healthy subjects depending on the mental activity and condition such as drowsiness, REM sleep, alertness, fatigue etc.
