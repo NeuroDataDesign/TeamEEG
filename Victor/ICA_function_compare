@@ -1,0 +1,25 @@
+EEGLAB functions: 
+	runica.m:
+		https://sccn.ucsd.edu/wiki/Chapter_09:_Decomposing_Data_Using_ICA#Subtracting_ICA_components_from_data
+		Path: automagic\matlab_scripts\eeglab14_1_2b\functions\sigprocfunc
+		Input: Single EEG (chans,frames*epochs)
+		Output: Weights, Spheres
+	pop_runica.m: 
+		Path: automagic\matlab_scripts\eeglab14_1_2b\functions
+		Input: EEG dataset or array of datasets
+		Output: The input EEGLAB dataset with new fields icaweights, icasphere and icachansind (channel indices)
+	Algo:
+		Infomax (runica(default), binica)
+		jader
+		fastica
+
+MNE functions:
+	mne.preprocessing.ICA
+		https://mne.tools/stable/generated/mne.preprocessing.ICA.html
+		A class
+		Input: mne.io.Raw, mne.Epochs, or mne.Evoked
+	Algo:
+		fastica(default)
+		infomax
+		picard
+		
