@@ -1,0 +1,25 @@
+robustReference
+	Input: EEG data, referenceOut(struct)
+	Output: referenceOut
+	Basic functions:
+		removeTrend
+			Defaults: High pass, 1Hz cutoff, window slides 0.02s
+		Unusable channels:
+			NaN, No data, Low SNR
+		findNoisyChannels
+			Method 1: Unusually high or low amplitude (using robust std)
+			Method 2: Compute the SNR (based on Christian Kothe's clean_channels)
+			Method 3: Global correlation criteria (from Nima Bigdely-Shamlo)
+			Method 4: Ransac corelation
+		interpolateChannels
+			using spherical splines
+
+pyprep:
+	Class Noisydata
+		__Init__:
+			filtering 0.01~50Hz
+			transform to uVolts
+			find bad channels: NaN, flat, deviation, hf_noise, correlation, ransac
+		Detrend
+			remove linear trend
+		Unusable channels: NaN, flat
