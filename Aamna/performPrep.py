@@ -9,72 +9,53 @@ import math
 from cmath import sqrt
 import numpy as np
 from scipy import signal
+import matplotlib.pyplot as plt
 
-def performPrep(eeg, eog, refChan, srate, linenoise, referenceType='robust'):
-
+def performPrep(eeg, refChan, srate, linenoise, referenceType='robust'):
+    dim = np.shape(eeg)
     if refChan != 0:
-        dim = np.shape(eeg)
         eeg_chans=np.setdiff1d(range(0, dim[0]), refChan-1) #remove the reference channel from the eeg channels
         eeg=eeg[eeg_chans,:]
-
-    eeg=np.row_stack((eeg,eog)) #combine the eeg and eog matrices row-wise
-
-    #perform high pass filtering and detrending
-
-    mne.filter.filter_data(eeg, srate, 1, None, picks=None, filter_length='auto', l_trans_bandwidth='auto',
-                           h_trans_bandwidth='auto', n_jobs=1, method='fir', iir_params=None, copy=True, phase='zero',
-                           fir_window='hamming', fir_design='firwin', pad='reflect_limited', verbose=None)
-    # performFilter(eeg,srate,filter_type='high',filter_freq=1)
-    eeg = signal.detrend(eeg)
-
-
-    #removing line noise
-    mne.filter.notch_filter(eeg, srate, linenoise, filter_length='auto', notch_widths=None, trans_bandwidth=1, method='fir',
-                            iir_params=None, mt_bandwidth=None, p_value=0.05, picks=None, n_jobs=1, copy=True,
-                            phase='zero', fir_window='hamming', fir_design='firwin', pad='reflect_limited',
-                            verbose=None)
-    # performFilter(eeg,srate,filter_type='notch',filter_freq=50)
 
     #finding bad channels
 
     #finding channels with NaNs or constant values for long periods of time
-    dim = np.shape(eeg)
-    channelsInterpolate = np.array(range(1, dim[0] + 1))
-    nanChannelMask = np.zeros(dim[0])
-    noSignalChannelMask = np.zeros(dim[0])
-    badChannelsfromNans = np.zeros(dim[0])
-    badChannelsfromNoData = np.zeros(dim[0])
-    robustchanneldeviation = np.zeros(dim[0])
-    badChannelFromDeviationMask = np.zeros(dim[0])
-    badChannelFromDeviation=np.zeros(dim[0])
-    channeldeviation = np.zeros(dim[0])
-    for i in range(0, dim[0]):
-        nanChannelMask[i] = np.int(np.sum(np.isnan(eeg[i, :])) > 0)
-    for i in range(0, dim[0]):
-        noSignalChannelMask[i] = np.int(robust.mad(eeg[i, :]) < 10 ** (-10) or np.std(eeg[i, :]) < 10 ** (-10))
-    print(noSignalChannelMask)
-    for i in range(0, dim[0]):
-        if nanChannelMask[i] == 1:
-            badChannelsfromNans[i] = i + 1
-        if noSignalChannelMask[i] == 1:
-            badChannelsfromNoData[i] = i + 1
+    org_dim = np.shape(eeg)
+
+    originalChannels=np.arange(org_dim[0])
+    channelsInterpolate=originalChannels
+    nanChannelMask=[False]*org_dim[0]
+    noSignalChannelMask = [False] * org_dim[0]
+
+    for i in range(0, org_dim[0]):
+        nanChannelMask[i] = np.sum(np.isnan(eeg[i, :])) > 0
+    for i in range(0, org_dim[0]):
+        noSignalChannelMask[i] = robust.mad(eeg[i, :]) < 10 ** (-10) or np.std(eeg[i, :]) < 10 ** (-10)
+    badChannelsfromNans=channelsInterpolate[nanChannelMask]
+    badChannelsfromNoData=channelsInterpolate[noSignalChannelMask]
+    for i in range(0, org_dim[0]):
+         if nanChannelMask[i]==True or noSignalChannelMask[i]==True:
+            eeg=np.delete(eeg,i,axis=0)
+
     channelsInterpolate = np.setdiff1d(channelsInterpolate, np.union1d(badChannelsfromNans, badChannelsfromNoData)) #channels to be used for interpolation
+    evaluationChannels=channelsInterpolate
+    new_dim=np.shape(eeg)
 
     # find channels that have abnormally high or low amplitude
-    for i in range(0, dim[0]):
-        channeldeviation[i] = 0.7413 * (np.percentile(eeg[i, :], 75) - np.percentile(eeg[i, :], 25))
+    robustchanneldeviation = np.zeros(org_dim[0])
+    badChannelFromDeviationMask = [False] * (new_dim[0])
+    channeldeviation = np.zeros(new_dim[0])
+    for i in range(0, new_dim[0]):
+        channeldeviation[i] = 0.7413 * iqr(eeg[i, :])
 
-    channeldeviationSD = 0.7413 * (np.percentile(channeldeviation, 75) - np.percentile(channeldeviation, 25))
+    channeldeviationSD = 0.7413 * iqr(channeldeviation)
     channeldeviationMedian = np.nanmedian(channeldeviation)
-    for i in range(0, dim[0]):
-        robustchanneldeviation[i] = (channeldeviation[i] - channeldeviationMedian) / channeldeviationSD
+    robustchanneldeviation[evaluationChannels] = np.divide(np.subtract(channeldeviation, channeldeviationMedian),
+                                                           channeldeviationSD)
+    for i in range(0, new_dim[0]):
+        badChannelFromDeviationMask[i] = abs(robustchanneldeviation[i]) > 5 or np.isnan(robustchanneldeviation[i])
 
-    for i in range(0, dim[0]):
-        badChannelFromDeviationMask[i] = np.int(abs(robustchanneldeviation[i]) > 5 or np.isnan(robustchanneldeviation[i]))
-        if badChannelFromDeviationMask[i] == 1:
-            badChannelFromDeviation[i]=i+1
-
-    badChannels=np.union1d(np.union1d(badChannelsfromNoData, badChannelFromDeviation), badChannelsfromNans)
+    badChannelsfromDeviation = evaluationChannels[badChannelFromDeviationMask]
 
     #finding channels with high frequency noise
     if srate>100:
@@ -83,20 +64,22 @@ def performPrep(eeg, eog, refChan, srate, linenoise, referenceType='robust'):
         X = np.zeros((dim[0], dim[1]))
         B=filter_design(100,A=np.array([1,1,0,0]),F=np.array([0,.36, 0.4, 1]),srate=250)
         for i in range(0, dim[1]):
-            X[:, i] = signal.filtfilt(B, -1, eeg[:, i])
+            X[:, i] = signal.filtfilt(B, 1, eeg[:, i])
+
         noisiness = np.divide(robust.mad(np.subtract(eeg, X)), robust.mad(X))
         noisinessmedian = np.nanmedian(noisiness)
         noiseSD = robust.mad(noisiness) * 1.4826
         zscoreHFNoise = np.divide(np.subtract(noisiness, noisinessmedian), noiseSD)
-        HFnoisemask = np.zeros(dim[1])
-        for i in range(0, dim[1]):
-            HFnoisemask[i] = np.int(np.int(zscoreHFNoise[i] > 5 or np.isnan(zscoreHFNoise[i])))
-
+        HFnoisemask=[False]*new_dim[0]
+        for i in range(0,new_dim[0]):
+            HFnoisemask[i] = zscoreHFNoise[i] > 5 or np.isnan(zscoreHFNoise[i])
     else:
         X = eeg
         noisinessmedian = 0
         noisinessSD = 1
         zscoreHFNoise = np.zeros(dim[1], 1)
+        badChannelsfromHFnoise=[]
+    badChannelsfromHFnoise=evaluationChannels[HFnoisemask]
 
     #finding channels by correlation
     correlationSeconds = 1  # default value
@@ -104,6 +87,8 @@ def performPrep(eeg, eog, refChan, srate, linenoise, referenceType='robust'):
     correlationWindow = np.arange(correlationFrames)
     correlationOffsets = np.arange(1, dim[0] - correlationFrames, correlationFrames)
     Wcorrelation = len(correlationOffsets)
+    maximumCorrelations = np.ones((org_dim[0], Wcorrelation))
+    drop_out=np.zeros((dim[1],Wcorrelation))
     channelCorrelation = np.ones((Wcorrelation, dim[1]))
     noiselevels = np.zeros((Wcorrelation, dim[1]))
     channelDeviations = np.zeros((Wcorrelation, dim[1]))
@@ -126,7 +111,31 @@ def performPrep(eeg, eog, refChan, srate, linenoise, referenceType='robust'):
             if drop[i, j] == 1:
                 channelDeviations[i, j] = 0
                 noiselevels[i, j] = 0
+
+    maximumCorrelations[evaluationChannels,:]=np.transpose(channelCorrelation)
+    drop_out[:]=np.transpose(drop)
+    noiselevels_out=np.transpose(noiselevels)
+    channelDeviations_out=np.transpose(channelDeviations)
+    thresholdedCorrelations=maximumCorrelations < 0.4
+    thresholdedCorrelations=thresholdedCorrelations.astype(int)
+    fractionBadCorrelationWindows=np.mean(thresholdedCorrelations,axis=1)
+    fractionBadDropOutWindows=np.mean(drop_out,axis=1)
+
+
+    badChannelsFromCorrelation = np.where(fractionBadCorrelationWindows > 0.01)
+    badChannelsFromCorrelation_out = badChannelsFromCorrelation[:]
+    badChannelsFromDropOuts = np.where(fractionBadDropOutWindows > 0.01)
+    badChannelsFromDropOuts_out = badChannelsFromDropOuts[:]
+    #medianMaxCorrelation = np.median(maximumCorrelations, 2);
+
+    badChannelsfromSNR=np.intersect1d(badChannelsFromCorrelation_out,badChannelsfromHFnoise)
+    noisyChannels = np.union1d(np.union1d(np.union1d(badChannelsfromDeviation, np.union1d(badChannelsFromCorrelation_out, badChannelsFromDropOuts_out)),badChannelsfromSNR),np.union1d(badChannelsfromNans,badChannelsfromNoData));
+    print(noisyChannels)
+
+
 #perform rereferencing and interpolation
+
+
 
 def filter_design(N,A,F,srate):
 
@@ -139,6 +148,11 @@ def filter_design(N,A,F,srate):
             B = np.real(np.fft.ifft(np.concatenate([F, np.conj(F[len(F) - 2:0:-1])])))
             B = np.multiply(B[0:N + 1], (np.transpose(W[:])))
             return B
+
+
+
+
+
 
 
 
