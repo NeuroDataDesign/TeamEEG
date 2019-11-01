@@ -1,5 +1,6 @@
 import os
 
+
 class Project:
     def __init__(self):
         # TODO: Need to populate these
@@ -79,5 +80,3 @@ class Project:
         subjects = [y for y in os.listdir(subs) if os.path.isfile(y)]
 
         return subjects
-
-

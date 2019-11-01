@@ -1,0 +1,34 @@
+Summary of the Prep pipeline
+
+•	PREP (preprocessing pipeline) was developed to perform early stage filtering of the EEG data in a standardized and automated manner.
+•	It performs the following steps: 
+  # High-pass filtering and detrending- All frequencies above 1 Hz are passed. 
+
+  # Line noise removal – It uses the cleanline method from EEGLab. The EEG signal is transformed into the frequency domain. 
+  The amplitude and the phase of the noise signal is obtained using frequency-domain regression model. The amplitude is compared 
+  to a threshold and if it exceeds it then the sinusoid noise signal is reconstructed in the time domain. It is then subtracted from the EEG. 
+  
+  # Referencing- Performs robust average referencing algorithm which is done in two phases:
+    >Estimate the true signal mean: EEGTemp=EEG-initial robust estimate(median by default)
+                                    badChannels=[]
+                                    iterations=0;
+                                    repeat
+                                          Detect bad channels for EEGTemp
+                                          newMean=mean of EEG with all bad channels interpolated
+                                          EEGTemp=EEG-newMean
+                                          iterations=iterations+1
+                                    end repeat
+                                    referenceSignal=mean of EEG with all the bad channels interpolated
+    >Find the bad channels relative to the true mean: EEG=EEG-referenceSignal
+                                                      Detect the bad channels for EEG
+                                                      EEG=EEG with bad channels interpolated
+                                                      referenceCorrection=mean EEG
+                                                      EEG=EEG-referenceCorrection
+                                                      refernceSignal=referenceSignal+referenceCorrection
+  
+  # Detection of noisy and outlier channels- It finds extreme amplitudes (deviation criterion), lack of correlation between channels 
+  (correlation criterion), lack of predictability by other channels (predictability criterion), high frequency noise (noisiness criterion). 
+  
+  # Interpolation of bad channels- It uses the EEGLab function, eeg_interp() for applying spherical interpolation. 
+
+•	It also generates a report of the dataset characteristics.
