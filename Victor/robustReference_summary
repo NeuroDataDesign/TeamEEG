@@ -10,16 +10,18 @@ robustReference
 			Method 1: Unusually high or low amplitude (using robust std)
 			Method 2: Compute the SNR (based on Christian Kothe's clean_channels)
 			Method 3: Global correlation criteria (from Nima Bigdely-Shamlo)
-			Method 4: Ransac corelation
+			Method 4: Ransac corelation(random sample)
 		interpolateChannels
 			using spherical splines
 
 pyprep:
 	Class Noisydata
 		__Init__:
-			filtering 0.01~50Hz
+			filtering 0.01~50Hz (filtered signal is used in hf_noise, correlation and ransac methods)
+				Modification: remove high-pass since filter is too long
 			transform to uVolts
-			find bad channels: NaN, flat, deviation, hf_noise, correlation, ransac
+			find bad channels: NaN, flat, deviation, hf_noise, correlation, ransac(random sample)
 		Detrend
 			remove linear trend
 		Unusable channels: NaN, flat
+
