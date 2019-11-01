@@ -1,0 +1,34 @@
+A large electroencephalographic motor imagery dataset 
+for electroencephalographic brain computer interfaces
+
+M. Kaya et al, 2018.
+
+
+-Dataset containing a data collection during the 
+development of slow cortical potential-based EEG BCI. 
+
+-The dataset contains 60 hours of EEG recordings, 13 participants,
+75 recording essions, 201 individual EEG BCI interaction session-segments,
+and over 60, 000 examples of motor imageries in 4 interaction paradigms.
+
+-The participants were all healthy volunteers students from 20-35 years old.
+
+-EEG data were acquired using an EEG-1200 JE-921A EEG system.
+
+-EEG data acquisition was performed with the help of a standard 10/20 EEG cap
+with 19 bridge electrodes in the 10/20 international configuration.
+
+-All data in the dataset were recorded in a synchronous BCI paradigm.
+
+-The dataset consists of 75 data files each containing the complete data record
+of one BCI recording session plus one text description file. Each recording session contains
+approximately 55 min of recorded EEG data for 3 BCI interaction segments.
+
+-All data files are shared in .mat format and contain MATLAB-readable records of the raw
+EEG data and the recordings session's interaction record.
+
+-A technical validation of the dataset was performed by building and examining all 
+stimulus-locked average event-related potential (ERP) curves for all different types of
+mental imageries.
+
+-
