@@ -1,21 +1,20 @@
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
 
-"""
-    Cian Scannell - Oct-2017 (https://github.com/cianmscannell/RPCA)
-    Computes rpca separation of M into L(low rank) and S(Sparse) using the parameter lam
-    this uses the alternating directions augmented method of multipliers
-    as described in my blog
-"""
 
 def rpca(M,lam,tol,maxIter):
 
     """ Perform Robust Principle Component Analysis:
-        
+    
     Performs a Robust Principal Component Analysis on the EEG data with
     the specified parameters: Lamda, Tolerance, and Maximum number of Iterations.
     The function outputs the EEG data with the noise removed as well as the nosie
     that was removed.
+    
+    Adapted from Cian Scannell - Oct-2017 (https://github.com/cianmscannell/RPCA)
+    Computes rpca separation of M into L(low rank) and S(Sparse) using the parameter lam
+    this uses the alternating directions augmented method of multipliers.
+    
     
     parameters
     ----------
@@ -27,17 +26,20 @@ def rpca(M,lam,tol,maxIter):
             3rd parameter, Tolerance (defalut = 1e-7) RPCA param
         maxIter : int
            fourth parameter, Maximum Iterations (deafult = 1000)
-
     return
     ------
-        L : npumpy.darray 
+        Data : npumpy.darray 
             Corrected Data (Low rank matrix)
-        S : npumpy.darray 
+        Error : npumpy.darray 
             Noise removed from the data (Sparse Matrix)
             note: M = L + S        
     
 """
-
+    #Calculate lamda if not provided using the Automagic algorithim
+    col = EEG.shape;
+    if (lam == -1): #if no input lamda, calculate its value
+        lam = 1 / np.sqrt(col[0]);
+        
     Nr = M.shape[0]
     Nc = M.shape[1]
     norm_2 = np.linalg.norm(M,2)
@@ -49,6 +51,7 @@ def rpca(M,lam,tol,maxIter):
     mu_bar = mu * 1e7
     rho = 1.5
 
+
     L = np.zeros((Nr,Nc))
     S = np.zeros((Nr,Nc))    
     
@@ -56,7 +59,6 @@ def rpca(M,lam,tol,maxIter):
     count = 0
     isRunning = True;
     while (isRunning and error > tol):
-        print(count)
         temp_t = M-L+(Y/mu)
         S = soft_thres(temp_t, lam/mu)
         U,sig,V = np.linalg.svd(M-S+(Y/mu), full_matrices=False)
@@ -69,12 +71,13 @@ def rpca(M,lam,tol,maxIter):
             isRunning = False;
             
             
-    L = L.reshape(Nr,Nc)
-    S = S.reshape(Nr,Nc)
+    Data = L.reshape(Nr,Nc)
+    Error = S.reshape(Nr,Nc)
 
-    return L,S
+    return Data, Error
 
 def soft_thres(x,eps):
+
     """
     Cian Scannell - Oct-2017  
     Soft thresholds a matrix x at the eps level
