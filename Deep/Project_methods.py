@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import mne
 
 
 class Project:
@@ -27,13 +28,13 @@ class Project:
 
         """
         if self.current == -1:
-            subject = Subject('','')
+            subject = Subject('', '')
             block = Block(self, subject, '', '', self.CGV)
             block.index = -1
             return
 
-        unique_name = self.processed_list(self.current)
-        block = self.block_map(unique_name)
+        unique_name = self.processed_list[self.current]
+        block = self.block_map[unique_name]
         return block
 
     def update_rating_lists(self, block):
@@ -50,49 +51,47 @@ class Project:
         if block.rate == self.CGV.RATINGS.Good:
             if not np.isin(block.index, self.good_list):
                 self.good_list.append(block.index)
-                self.not_rated_list[self.not_rated_list == block.index] = ""
-                self.ok_list[self.ok_list == block.index] = ""
-                self.bad_list[self.bad_list == block.index] = ""
-                self.interpolate_list[self.interpolate_list == block.index] = ""
+                self.not_rated_list[self.not_rated_list == block.index] = []
+                self.ok_list[self.ok_list == block.index] = []
+                self.bad_list[self.bad_list == block.index] = []
+                self.interpolate_list[self.interpolate_list == block.index] = []
                 self.good_list = np.unique(self.good_list)
 
         elif block.rate == self.CGV.RATINGS.OK:
             if not np.isin(block.index, self.ok_list):
                 self.ok_list.append(block.index)
-                self.not_rated_list[self.not_rated_list == block.index] = ""
-                self.good_list[self.good_list == block.index] = ""
-                self.bad_list[self.bad_list == block.index] = ""
-                self.interpolate_list[self.interpolate_list == block.index] = ""
+                self.not_rated_list[self.not_rated_list == block.index] = []
+                self.good_list[self.good_list == block.index] = []
+                self.bad_list[self.bad_list == block.index] = []
+                self.interpolate_list[self.interpolate_list == block.index] = []
                 self.ok_list = np.unique(self.ok_list)
 
         elif block.rate == self.CGV.RATINGS.Bad:
             if not np.isin(block.index, self.bad_list):
                 self.bad_list.append(block.index)
-                self.not_rated_list[self.not_rated_list == block.index] = ""
-                self.good_list[self.good_list == block.index] = ""
-                self.ok_list[self.ok_list == block.index] = ""
-                self.interpolate_list[self.interpolate_list == block.index] = ""
+                self.not_rated_list[self.not_rated_list == block.index] = []
+                self.good_list[self.good_list == block.index] = []
+                self.ok_list[self.ok_list == block.index] = []
+                self.interpolate_list[self.interpolate_list == block.index] = []
                 self.bad_list = np.unique(self.bad_list)
 
         elif block.rate == self.CGV.RATINGS.Interpolate:
             if not np.isin(block.index, self.interpolate_list):
                 self.interpolate_list.append(block.index)
-                self.not_rated_list[self.not_rated_list == block.index] = ""
-                self.good_list[self.good_list == block.index] = ""
-                self.ok_list[self.ok_list == block.index] = ""
-                self.bad_list[self.bad_list == block.index] = ""
+                self.not_rated_list[self.not_rated_list == block.index] = []
+                self.good_list[self.good_list == block.index] = []
+                self.ok_list[self.ok_list == block.index] = []
+                self.bad_list[self.bad_list == block.index] = []
                 self.interpolate_list = np.unique(self.interpolate_list)
 
         elif block.rate == self.CGV.RATINGS.NotRated:
             if not np.isin(block.index, self.not_rated_list):
                 self.not_rated_list.append(block.index)
-                self.bad_list[self.bad_list == block.index] = ""
-                self.good_list[self.good_list == block.index] = ""
-                self.ok_list[self.ok_list == block.index] = ""
-                self.interpolate_list[self.interpolate_list == block.index] = ""
+                self.bad_list[self.bad_list == block.index] = []
+                self.good_list[self.good_list == block.index] = []
+                self.ok_list[self.ok_list == block.index] = []
+                self.interpolate_list[self.interpolate_list == block.index] = []
                 self.not_rated_list = np.unique(self.not_rated_list)
-
-                return self
 
     def update_rating_structures(self):
         """
@@ -105,7 +104,7 @@ class Project:
         This functionality helps to merge different projects
         together. As it goes through all files in the dataFolder and
         resultFolder, it finds out the new files that are added to
-        these folders, and updates the data correspondigly. If
+        these folders, and updates the data correspondingly. If
         there are raw files added to the dataFolder only, it means some
         new subjects are added. If there are raw files added to the
         dataFolder and they have also their corresponding new
@@ -122,6 +121,12 @@ class Project:
         -------
 
         """
+
+    def get_quality_ratings(self, cutoffs):
+        blocks = [self.block_map[x] for x in self.processed_list]
+        q_scores = map(block.get_current_quality_score(), blocks)
+        ratings = rate_quality(q_scores, self.CGV, cutoffs)
+        return ratings
 
     def get_rated_count(self):
         """
@@ -158,6 +163,7 @@ class Project:
         rate - Return qRate if the block is not rated manually. If
         it is rated manually return 'Manually Rated'.
         """
+
         rate = None
         if block.isManuallyRated:
             rate = 'Manually Rated'
