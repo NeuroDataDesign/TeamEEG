@@ -24,3 +24,4 @@ pyprep:
 		Detrend
 			remove linear trend
 		Unusable channels: NaN, flat
+

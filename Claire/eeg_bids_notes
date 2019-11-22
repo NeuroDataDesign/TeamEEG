@@ -1,0 +1,25 @@
+BIDS
+Overall idea of BIDS: make it easy for someone else to work on your data, share data, etc. - added benefit: you can use other people’s codes cause it’s all there for you! Thanks open source community
+Dataset (out project), subject, session, data acquisition, data type, task, event
+File name structure: YOU MUST USE THIS
+	entities (key-value pairs)
+	chain of entities, a suffix, connected by underscores, gives the filename
+Source data -> raw data -> derived data
+Inheritance -> any metadata defined at a higher part of the directory is inherited lower unless there is something else below that replaces it - key value pairs not in the deeper level one are inherited by the shallow one
+	don’t define at the top if its more or less even, causing overrides
+Any labels of subjects, sessions, etc. must only be letters and numbers 
+
+EEG for BIDS
+a .json file required to describe dataset
+Metadata “eeg.json” will describe all experimental and recording details
+Within EEG directory of each subject, an EEG file with naming convention
+	also a .tsv file for the channels, also .tsv for electrodes and .json for coordsystem 
+	events.tsv should be present
+Formats of data supported: .edf, brainVision core data format, eeglab (.set and .fdt) and Biosemi (.bdf)
+Definition: electrodes are points of contact, channels are data challenge (ref and ground are not channels)
+Definition: anatomical landmarks are not fiducials , the latter are consistent points to reference coord system, anatomical landmarks can vary
+Use MNE-BIDS!
+
+MNE_BIDS
+Codes here take care of all of the reading/loading in files, parsing the file name for the subject, sessions, task, etc.
+Also functions to move data into BIDS, write the .tsv files, all you need to make the dataset, make the file names, everything

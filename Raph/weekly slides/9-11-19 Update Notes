@@ -1,0 +1,34 @@
+#Microstates in Resting-State EEG: Current Status and Future Directions (Khanna 2015):
+
+  -EEG - millisecond temporal resolution
+  
+  -Resting state, alpha frequency band (8-12Hz) can be categorized into a limited number of distinct “stable” states called microstates.
+  
+  -Microstate - topography of electrical potentials from multichannel array of the scalp that last for 80-120 ms before transitioning to a different microstate.
+  
+  -Global representation of a functional state
+  
+  -In my own words = many different recurring patterns of activity that is momentarily stable 
+  
+  -Represent discrete mental operations that combine to create spontaneous mental activity 
+  
+  -The way you perceive stimuli depends on the current microstate of your brain 
+  
+  -People think different things in different microstates ex. State for imagery  and state for abstract thought
+
+
+
+#Automagic: Standardized preprocessing of big EEG data (Pedroni 2019 Automagic):
+
+  -A way to improve the quality of eeg recording and set a standard of quality to allow for large scale adoption of using EEG data
+ The main purpose of this is to remove subjective opions on data EEG sets and to create a formal way to find and identify noisy channels and data sets in order to improve overall quiality if analysis of the data
+ 
+ -Pipeline = Data -> Bad Channel Identification -> remove bad channels -> correct artifacts if possible -> Quility assesment and Classification (into 'good' 'ok' and 'bad' data sets)
+ 
+ -If recorded you can inclde EOG (electroculargraph) and use that data to exclude noise from brain signal for eye movment 
+Ratio of Bad Channels (RBC) is calcuted to determine if a data set is 'good' 'ok' or 'bad'
+
+-"applying a pipeline of bad channel identification algorithms and MARA, an ICA-based artifact correction method, is sufficient to reduce a large number of artifacts."
+
+-Uses EEGLab for some preprossesing features. 
+
