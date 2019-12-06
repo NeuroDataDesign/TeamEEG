@@ -11,6 +11,7 @@ def rpca(M,lam,tol,maxIter):
     The function outputs the EEG data with the noise removed as well as the nosie
     that was removed.
 
+
     Adapted from Cian Scannell - Oct-2017 (https://github.com/cianmscannell/RPCA)
     Computes rpca separation of M into L(low rank) and S(Sparse) using the parameter lam
     this uses the alternating directions augmented method of multipliers.
@@ -21,6 +22,7 @@ def rpca(M,lam,tol,maxIter):
         M : npumpy.darray
             1st parameter, EEG Data (must include)
         lam : double
+
             2nd parameter, Lamda paramter for RPCA (default = 1/(sqrt(# of Colunms))
         tol : double
             3rd parameter, Tolerance (defalut = 1e-7) RPCA param
@@ -28,6 +30,7 @@ def rpca(M,lam,tol,maxIter):
            fourth parameter, Maximum Iterations (deafult = 1000)
     return
     ------
+
         Data : npumpy.darray
             Corrected Data (Low rank matrix)
         Error : npumpy.darray
@@ -39,6 +42,7 @@ def rpca(M,lam,tol,maxIter):
     col = EEG.shape;
     if (lam == -1): #if no input lamda, calculate its value
         lam = 1 / np.sqrt(col[1]);
+
 
     Nr = M.shape[0]
     Nc = M.shape[1]
@@ -55,6 +59,7 @@ def rpca(M,lam,tol,maxIter):
     L = np.zeros((Nr,Nc))
     S = np.zeros((Nr,Nc))
 
+
     error = 10
     count = 0
     isRunning = True;
@@ -66,9 +71,11 @@ def rpca(M,lam,tol,maxIter):
         Y = Y + mu*(M-L-S)
         mu = np.minimum(mu*rho,mu_bar)
         error = np.linalg.norm(M-L-S,'fro')/np.linalg.norm(M,'fro')
+
         count += 1
         if (count >= maxIter):
             isRunning = False;
+
 
 
     Data = L.reshape(Nr,Nc)
@@ -83,12 +90,14 @@ def soft_thres(x,eps):
     Soft thresholds a matrix x at the eps level
     i.e ST(x,eps)_ij = sgn(x_ij) max(|x_ij| - eps, 0)
 
+
     parameters
     ----------
         x : npumpy.darray
             first parameter, values to be thersholded
         eps : double
             second parameter, thershold
+
 
     return
     ------

@@ -68,7 +68,7 @@ def performPrep(eeg, refChan, srate, linenoise, referenceType='robust'):
 
         noisiness = np.divide(robust.mad(np.subtract(eeg, X)), robust.mad(X))
         noisinessmedian = np.nanmedian(noisiness)
-        noiseSD = robust.mad(noisiness) * 1.4826
+        noiseSD = np.median(np.absolute(np.subtract(noisiness,np.median(noisiness))))*1.4826
         zscoreHFNoise = np.divide(np.subtract(noisiness, noisinessmedian), noiseSD)
         HFnoisemask=[False]*new_dim[0]
         for i in range(0,new_dim[0]):
@@ -80,7 +80,6 @@ def performPrep(eeg, refChan, srate, linenoise, referenceType='robust'):
         zscoreHFNoise = np.zeros(dim[1], 1)
         badChannelsfromHFnoise=[]
     badChannelsfromHFnoise=evaluationChannels[HFnoisemask]
-
     #finding channels by correlation
     correlationSeconds = 1  # default value
     correlationFrames = correlationSeconds * srate
@@ -128,7 +127,7 @@ def performPrep(eeg, refChan, srate, linenoise, referenceType='robust'):
     badChannelsFromDropOuts_out = badChannelsFromDropOuts[:]
     #medianMaxCorrelation = np.median(maximumCorrelations, 2);
 
-    badChannelsfromSNR=np.intersect1d(badChannelsFromCorrelation_out,badChannelsfromHFnoise)
+    badChannelsfromSNR=np.union1d(badChannelsFromCorrelation_out,badChannelsfromHFnoise)
     noisyChannels = np.union1d(np.union1d(np.union1d(badChannelsfromDeviation, np.union1d(badChannelsFromCorrelation_out, badChannelsFromDropOuts_out)),badChannelsfromSNR),np.union1d(badChannelsfromNans,badChannelsfromNoData));
     print(noisyChannels)
 
@@ -151,12 +150,7 @@ def filter_design(N,A,F,srate):
 
 
 
-
-
-
-
-
-
-
-
-
+a=loadmat('S001R04.mat')
+b=loadmat('S01T.mat')
+eeg=a['record']
+performPrep(eeg,0,160,50)
