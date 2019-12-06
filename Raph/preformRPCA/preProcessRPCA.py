@@ -56,6 +56,7 @@ def rpca(M,lam,tol,maxIter):
     count = 0
     isRunning = True;
     while (isRunning and error > tol):
+        print(count)
         temp_t = M-L+(Y/mu)
         S = soft_thres(temp_t, lam/mu)
         U,sig,V = np.linalg.svd(M-S+(Y/mu), full_matrices=False)
